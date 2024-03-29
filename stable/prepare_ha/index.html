@@ -1255,40 +1255,8 @@ AppDaemon automations in HACS, as these are not enabled by default:</p>
 <h1 id="workaround-for-homeassistant-202404">Workaround for HomeAssistant 2024.04<a class="headerlink" href="#workaround-for-homeassistant-202404" title="Permanent link">¶</a></h1>
 <p>AppDaemon is using the old REST API that until AppDaemon moved on the the websocket API this woraround is needed to get weather forecast data from homeassistant. (<a href="https://github.com/AppDaemon/appdaemon/issues/1837">https://github.com/AppDaemon/appdaemon/issues/1837</a>)</p>
 <p>To get the forecast data in appdaemon, there is a script needed in homeassistant's script.yaml:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">call_service_with_response</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Calls a service and returns its response to AppDaemon</span>
-<span class="w">  </span><span class="nt">fields</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">call_id</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Call id</span>
-<span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">An id to uniquely identify the call</span>
-<span class="w">      </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">      </span><span class="nt">selector</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">service_name</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service name</span>
-<span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain.some_service</span>
-<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The service to call</span>
-<span class="w">      </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">      </span><span class="nt">selector</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">service_data</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service data</span>
-<span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Data to pass to the service</span>
-<span class="w">      </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">      </span><span class="nt">selector</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">object</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">sequence</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">service_name</span><span class="nv"> </span><span class="s">}}"</span>
-<span class="w">      </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">service_data</span><span class="nv"> </span><span class="s">}}"</span>
-<span class="w">      </span><span class="nt">response_variable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">response</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">call_service_with_response.finished</span><span class="w"> </span><span class="c1"># event name cannot be templated unfortunately</span>
-<span class="w">      </span><span class="nt">event_data</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">call_id</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">call_id</span><span class="nv"> </span><span class="s">}}"</span>
-<span class="w">        </span><span class="nt">response</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">response</span><span class="nv"> </span><span class="s">}}"</span>
-</code></pre></div>
-<p><img alt="image" src="https://github.com/joBr99/nspanel-lovelace-ui/assets/29555657/ea646579-1287-491e-a1e8-5989c7c34b39"></p></div>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div></div>
 
 
 
