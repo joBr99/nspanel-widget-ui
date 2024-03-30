@@ -1254,9 +1254,28 @@ AppDaemon automations in HACS, as these are not enabled by default:</p>
 </ol>
 <h1 id="workaround-for-homeassistant-202404">Workaround for HomeAssistant 2024.04<a class="headerlink" href="#workaround-for-homeassistant-202404" title="Permanent link">¶</a></h1>
 <p>AppDaemon is using the old REST API that until AppDaemon moved on the the websocket API this woraround is needed to get weather forecast data from homeassistant. (<a href="https://github.com/AppDaemon/appdaemon/issues/1837">https://github.com/AppDaemon/appdaemon/issues/1837</a>)</p>
-<p>To get the forecast data in appdaemon, there is a script needed in homeassistant's script.yaml:</p>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div></div>
+<p>To get the forecast data in appdaemon, there is a script needed in homeassistant's configuration.yaml:</p>
+<p></p><div class="highlight"><pre><span></span><code><span class="nt">template</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">trigger</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_pattern</span>
+<span class="w">        </span><span class="nt">hours</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/1</span>
+<span class="w">    </span><span class="nt">action</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weather.get_forecasts</span>
+<span class="w">        </span><span class="nt">data</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daily</span>
+<span class="w">        </span><span class="nt">target</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">entity_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weather.k3ll3r</span><span class="w"> </span><span class="c1"># change to your weather entity in this line</span>
+<span class="w">        </span><span class="nt">response_variable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daily</span>
+<span class="w">    </span><span class="nt">sensor</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weather Forecast Daily</span>
+<span class="w">        </span><span class="nt">unique_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weather_forecast_daily</span>
+<span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">now().isoformat()</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">        </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">forecast</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">daily['weather.k3ll3r'].forecast</span><span class="nv"> </span><span class="s">}}"</span><span class="w"> </span><span class="c1"># change to your weather entity in this line</span>
+</code></pre></div>
+<img alt="image" src="https://github.com/joBr99/nspanel-lovelace-ui/assets/29555657/41f21db3-a6e2-4e4f-8dab-b9351ecd23e5">
+<p>Adjust the entities in your apps.yaml that are accessing the forecast to the newly created trigger template:</p>
+<p><img alt="image" src="https://github.com/joBr99/nspanel-lovelace-ui/assets/29555657/1cfd913d-88be-4cb0-9a68-0e864ee1ad4f"></p></div>
 
 
 
